@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Search Box</title>
+    
     <style>
         /* Basic styling for the search box */
         .search-container {
@@ -15,15 +16,23 @@
         .gcse-search {
             width: 100%;
         }
+
+        /* Background color styling */
+        .backgroundcolor {
+            background-color: black;
+            color: white; /* Ensure text is readable on dark background */
+            min-height: 100vh; /* Make sure it covers the full viewport height */
+            margin: 0; /* Remove default margin */
+        }
     </style>
 </head>
-<body>
+<body class="backgroundcolor">
 
     <div class="search-container">
         <!-- Google Custom Search Engine code -->
         <script async src="https://cse.google.com/cse.js?cx=62076a4dcbc194d32"></script>
         <div class="gcse-search"></div>
     </div>
-
+   
 </body>
 </html>
