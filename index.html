@@ -6,7 +6,7 @@
     <title>Custom Search Box</title>
     
     <style>
-        /* Basic styling for the search box */
+       
         .search-container {
             width: 100%;
             max-width: 600px;
@@ -17,22 +17,36 @@
             width: 100%;
         }
 
-        /* Background color styling */
+       
         .backgroundcolor {
             background-color: black;
-            color: white; /* Ensure text is readable on dark background */
-            min-height: 100vh; /* Make sure it covers the full viewport height */
-            margin: 0; /* Remove default margin */
+            color: white; 
+            min-height: 100vh; 
+            margin: 0; 
         }
     </style>
 </head>
 <body class="backgroundcolor">
 
     <div class="search-container">
-        <!-- Google Custom Search Engine code -->
+      
         <script async src="https://cse.google.com/cse.js?cx=62076a4dcbc194d32"></script>
         <div class="gcse-search"></div>
     </div>
-   
+
+    <script>
+        
+        window.onload = function() {
+            var searchBox = document.querySelector('input.gsc-input');
+
+            if (searchBox) {
+                
+                searchBox.addEventListener('input', function() {
+                    searchBox.value = searchBox.value.replace(/:pdf$/, '') + ':pdf';
+                });
+            }
+        };
+    </script>
+
 </body>
 </html>
