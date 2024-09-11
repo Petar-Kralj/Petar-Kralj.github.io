@@ -3,50 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Search Box</title>
-    
+    <title>Media Manipulation Game</title>
     <style>
-       
-        .search-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
             text-align: center;
+            margin: 0;
+            padding: 0;
         }
-        .gcse-search {
-            width: 100%;
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
         }
-
-       
-        .backgroundcolor {
-            background-color: black;
-            color: white; 
-            min-height: 100vh; 
-            margin: 0; 
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .scenario {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .choices {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        button {
+            background-color: #008cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #005f73;
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .animate {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
-<body class="backgroundcolor">
+<body>
 
-    <div class="search-container">
-      
-        <script async src="https://cse.google.com/cse.js?cx=62076a4dcbc194d32"></script>
-        <div class="gcse-search"></div>
+<header>
+    <h1>Media Manipulation Game</h1>
+    <p>Can you spot misinformation?</p>
+</header>
+
+<div class="container">
+    <div id="scenario" class="scenario">Scenario 1: You come across a tweet claiming that a major celebrity supports a controversial cause, but there’s no source or evidence.</div>
+
+    <div id="choices" class="choices">
+        <button onclick="chooseOption(1)">Retweet</button>
+        <button onclick="chooseOption(2)">Verify the claim</button>
     </div>
 
-    <script>
-        
-        window.onload = function() {
-            var searchBox = document.querySelector('input.gsc-input');
+    <div id="result" class="result hidden animate"></div>
 
-            if (searchBox) {
-                
-                searchBox.addEventListener('input', function() {
-                    searchBox.value = searchBox.value.replace(/:pdf$/, '') + ':pdf';
-                });
-            }
-        };
-    </script>
+    <button id="nextBtn" class="hidden" onclick="nextScenario()">Next Scenario</button>
+</div>
+
+<script>
+    let scenarioIndex = 0;
+    let correctAnswers = 0;
+    const totalScenarios = 20;
+
+    const scenarios = [
+    {
+        text: "Scenario 1: You come across a tweet claiming that a major celebrity supports a controversial cause, but there’s no source or evidence.",
+        options: ["Retweet", "Verify the claim"],
+        correct: 2,
+        feedback: "Always verify before sharing potentially harmful or false information."
+    },
+    {
+        text: "Scenario 2: A news article claims that a new policy will lead to the collapse of the economy, but the language is highly emotional.",
+        options: ["Panic and share the article", "Look for more credible sources"],
+        correct: 2,
+        feedback: "Emotional language can be a sign of manipulation. Always check credible sources."
+    },
+    {
+        text: "Scenario 3: You see a post with a shocking headline that makes you angry, but the article itself doesn’t match the headline’s tone.",
+        options: ["Share based on the headline", "Read the article thoroughly first"],
+        correct: 2,
+        feedback: "Clickbait headlines are designed to mislead. Always read the full article."
+    },
+    {
+        text: "Scenario 4: A friend shares a viral video, but it seems too outrageous to be true.",
+        options: ["Trust your friend", "Fact-check the video"],
+        correct: 2,
+        feedback: "Even well-meaning people can spread misinformation. Fact-check viral content."
+    },
+    {
+        text: "Scenario 5: A breaking news alert comes out with limited details about a sensitive topic.",
+        options: ["Assume it’s accurate", "Wait for more information"],
+        correct: 2,
+        feedback: "Early reports can often be inaccurate. Wait for verified information."
+    },
+    {
+        text: "Scenario 6: A meme claims a widely accepted scientific fact is a lie.",
+        options: ["Believe the meme", "Check with scientific sources"],
+        correct: 2,
+        feedback: "Memes can easily spread misinformation. Trust credible sources."
+    },
+    {
+        text: "Scenario 7: An influencer shares a conspiracy theory with no credible sources backing it up.",
+        options: ["Share it because it’s popular", "Question the lack of credible sources"],
+        correct: 2,
+        feedback: "Popularity doesn’t equal truth. Always look for credible evidence."
+    },
+    {
+        text: "Scenario 8: An article claims that all mainstream media is biased, citing only fringe websites as sources.",
+        options: ["Trust the fringe websites", "Seek a balanced viewpoint"],
+        correct: 2,
+        feedback: "It’s important to check multiple viewpoints, especially on polarizing topics."
+    },
+    {
+        text: "Scenario 9: You come across an article with an anonymous author making bold claims without evidence.",
+        options: ["Share the article", "Look for articles with credible authors"],
+        correct: 2,
+        feedback: "Anonymous sources may not always be trustworthy. Seek credibility."
+    },
+    {
+        text: "Scenario 10: A social media post shares a quote from a public figure, but the figure denies saying it.",
+        options: ["Believe the post", "Check the public figure’s official statement"],
+        correct: 2,
+        feedback: "Always verify quotes directly from the source."
+    },
+    {
+        text: "Scenario 11: A video seems highly edited and doesn’t show the full context of an event.",
+        options: ["Trust the video as is", "Search for the full video"],
+        correct: 2,
+        feedback: "Videos can be edited to mislead. Always look for full context."
+    },
+    {
+        text: "Scenario 12: A friend forwards you an email claiming a new health threat is being covered up by the government.",
+        options: ["Believe the email", "Check reliable health organizations"],
+        correct: 2,
+        feedback: "Health scares are often used to manipulate. Check official health sources."
+    },
+    {
+        text: "Scenario 13: A news source uses vague language like 'many people are saying' to make a claim.",
+        options: ["Believe the claim", "Question the vague language"],
+        correct: 2,
+        feedback: "Vague language is a red flag. Always seek specific, verified information."
+    },
+    {
+        text: "Scenario 14: An advertisement promises a miracle cure with no scientific backing.",
+        options: ["Buy the product", "Look for scientific evidence"],
+        correct: 2,
+        feedback: "Miracle cures often lack scientific support. Always check the evidence."
+    },
+    {
+        text: "Scenario 15: A viral post shows a heavily edited image with no source.",
+        options: ["Share the image", "Search for the original image"],
+        correct: 2,
+        feedback: "Images can easily be manipulated. Always seek the original source."
+    },
+    {
+        text: "Scenario 16: A news article with no byline makes shocking claims.",
+        options: ["Believe the claims", "Check for articles with named authors"],
+        correct: 2,
+        feedback: "Credible articles should have authors and sources. Be wary of nameless pieces."
+    },
+    {
+        text: "Scenario 17: A news story is filled with opinions but presented as fact.",
+        options: ["Trust it", "Look for objective reporting"],
+        correct: 2,
+        feedback: "Opinion pieces are not the same as factual reporting. Seek objectivity."
+    },
+    {
+        text: "Scenario 18: A social media trend encourages dangerous behavior without discussing the risks.",
+        options: ["Join the trend", "Consider the risks and check credible sources"],
+        correct: 2,
+        feedback: "Trends can be dangerous. Always evaluate risks with trusted sources."
+    },
+    {
+        text: "Scenario 19: A video clip is shared without context, implying a false narrative.",
+        options: ["Believe the video", "Look for the full story"],
+        correct: 2,
+        feedback: "Context is crucial. Always seek the full story before making conclusions."
+    },
+    {
+        text: "Scenario 20: A post is shared by someone with no expertise on the topic but claims authority.",
+        options: ["Trust the post", "Look for expert opinions"],
+        correct: 2,
+        feedback: "Expertise matters. Always prioritize informed, credible sources."
+    }
+];
+
+
+    function chooseOption(option) {
+    const resultDiv = document.getElementById('result');
+    const choicesDiv = document.getElementById('choices');
+    const nextBtn = document.getElementById('nextBtn');
+
+    if (option === scenarios[scenarioIndex].correct) {
+        resultDiv.textContent = "Correct! " + scenarios[scenarioIndex].feedback;
+        correctAnswers++;
+    } else {
+        resultDiv.textContent = "Incorrect. " + scenarios[scenarioIndex].feedback;
+    }
+
+    resultDiv.classList.remove('hidden');
+    choicesDiv.classList.add('hidden');
+    nextBtn.classList.remove('hidden');
+}
+
+
+function nextScenario() {
+    scenarioIndex++;
+    if (scenarioIndex < scenarios.length) {
+        const scenarioDiv = document.getElementById('scenario');
+        const choicesDiv = document.getElementById('choices');
+        const resultDiv = document.getElementById('result');
+        const nextBtn = document.getElementById('nextBtn');
+
+        scenarioDiv.textContent = scenarios[scenarioIndex].text;
+        choicesDiv.innerHTML = `<button onclick="chooseOption(1)">${scenarios[scenarioIndex].options[0]}</button>
+                                <button onclick="chooseOption(2)">${scenarios[scenarioIndex].options[1]}</button>`;
+        
+        resultDiv.classList.add('hidden');
+        choicesDiv.classList.remove('hidden');
+        nextBtn.classList.add('hidden');
+    } else {
+        const percentage = (correctAnswers / totalScenarios) * 100;
+        document.getElementById('scenario').textContent = `Game Over! You got ${correctAnswers} out of ${totalScenarios} correct (${percentage.toFixed(2)}%).`;
+        document.getElementById('choices').classList.add('hidden');
+        document.getElementById('result').classList.add('hidden');
+        document.getElementById('nextBtn').classList.add('hidden');
+    }
+}
+
+</script>
 
 </body>
 </html>
