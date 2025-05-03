@@ -1,415 +1,576 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stylish QR Code Generator</title>
-  <link href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #ffe066;
-      --secondary: #fff;
-      --accent: #ffe066;
-      --bg: #111;
-      --text: #fff;
-      --radius: 32px;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    header {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin: 0;
-      color: var(--accent);
-    }
-    .container {
-      background: #181818;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
-      padding: 2rem 1.5rem 1.5rem 1.5rem;
-      max-width: 400px;
-      width: 100%;
-      margin-bottom: 2rem;
-      color: var(--text);
-    }
-    label, .preview-label {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      display: block;
-      color: var(--secondary);
-    }
-    input[type="url"] {
-      width: 100%;
-      padding: 0.7rem;
-      border: 1px solid #333;
-      border-radius: var(--radius);
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      box-sizing: border-box;
-      background: #222;
-      color: var(--text);
-      transition: border 0.2s;
-    }
-    input[type="url"]:focus {
-      border: 1.5px solid var(--primary);
-      outline: none;
-    }
-    .designs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-    .design-btn {
-      flex: 1 1 30%;
-      padding: 0.5rem 0.2rem;
-      border: none;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #111;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      font-size: 0.95rem;
-      margin-bottom: 0.2rem;
-      margin-top: 0.2rem;
-      box-shadow: 0 2px 8px rgba(255,224,102,0.08);
-    }
-    .design-btn.selected, .design-btn:hover {
-      background: #fff;
-      color: #111;
-      border: 2px solid var(--accent);
-    }
-    #qrcode-preview {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 220px;
-      min-width: 220px;
-      background: linear-gradient(135deg, #232526 0%, #414345 100%);
-      border-radius: 32px;
-      margin-bottom: 1rem;
-      border: 3px solid #ffe066;
-      box-shadow: 0 8px 32px rgba(255, 224, 102, 0.18), 0 2px 8px rgba(0,0,0,0.18);
-      position: relative;
-      transition: box-shadow 0.3s;
-      overflow: hidden;
-    }
-    .qr-frame {
-      background: #fff;
-      border-radius: 24px;
-      padding: 16px;
-      box-shadow: 0 4px 16px rgba(255, 224, 102, 0.10);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 160px;
-      min-height: 160px;
-      position: relative;
-      z-index: 2;
-      margin-bottom: 0.5em;
-      animation: popIn 0.5s cubic-bezier(.68,-0.55,.27,1.55);
-    }
-    .cta-text {
-      background: #ffe066;
-      color: #111;
-      font-weight: 700;
-      padding: 0.3em 1em;
-      border-radius: 999px;
-      font-size: 1rem;
-      box-shadow: 0 2px 8px rgba(255,224,102,0.08);
-      z-index: 3;
-      letter-spacing: 0.03em;
-      pointer-events: none;
-      margin-bottom: 0.5em;
-      animation: fadeIn 0.7s;
-    }
-    @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.8);}
-      100% { opacity: 1; transform: scale(1);}
-    }
-    @keyframes fadeIn {
-      0% { opacity: 0;}
-      100% { opacity: 1;}
-    }
-    .placeholder {
-      color: #ffe066cc;
-      font-size: 1.1rem;
-      text-align: center;
-      position: absolute;
-      left: 0; right: 0; top: 0; bottom: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 1;
-      animation: fadeIn 0.7s;
-    }
-    .placeholder svg {
-      margin-bottom: 0.5em;
-    }
-    button#download {
-      width: 100%;
-      padding: 0.8rem;
-      background: var(--accent);
-      color: #111;
-      border: none;
-      border-radius: 999px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 0.5rem;
-      transition: background 0.2s, color 0.2s;
-      text-decoration: none;
-      display: block;
-      box-shadow: 0 2px 8px rgba(255,224,102,0.08);
-    }
-    button#download:disabled {
-      background: #333;
-      color: #aaa;
-      cursor: not-allowed;
-    }
-    button#download:hover:not(:disabled) {
-      background: #fff;
-      color: #111;
-      border: 2px solid var(--accent);
-    }
-    @media (max-width: 500px) {
-      .container {
-        padding: 1rem 0.5rem 1rem 0.5rem;
-        max-width: 98vw;
-      }
-      h1 {
-        font-size: 1.3rem;
-      }
-      #qrcode-preview {
-        min-width: 120px;
-        min-height: 120px;
-        border-radius: 20px;
-        padding: 0.5rem;
-      }
-      .qr-frame {
-        min-width: 90px;
-        min-height: 90px;
-        padding: 8px;
-        border-radius: 12px;
-      }
-      .cta-text {
-        font-size: 0.85rem;
-        padding: 0.2em 0.7em;
-      }
-    }
-  </style>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PG2RD30WYX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-PG2RD30WYX');
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogSEO Analyzer - Optimize Your Blog Content</title>
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #34c759;
+            --dark: #333333;
+            --light: #f8f9fa;
+            --danger: #ff3b30;
+            --warning: #ffcc00;
+            --success: #34c759;
+            --info: #5ac8fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .url-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3a5ae8;
+        }
+        
+        .results {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .score-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .score-label {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .analysis-section {
+            margin-bottom: 2rem;
+        }
+        
+        .analysis-section h3 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .analysis-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        
+        .good {
+            background-color: rgba(52, 199, 89, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        .warning {
+            background-color: rgba(255, 204, 0, 0.1);
+            border-left: 4px solid var(--warning);
+        }
+        
+        .bad {
+            background-color: rgba(255, 59, 48, 0.1);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .analysis-item h4 {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .analysis-item h4 span {
+            margin-right: 0.5rem;
+        }
+        
+        .analysis-item p {
+            color: #666;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Stylish QR Code Generator</h1>
-    <p style="color:#ffe066cc; font-size:1rem;">Create beautiful QR codes for your links</p>
-  </header>
-  <div class="container">
-    <form id="qrForm" autocomplete="off" onsubmit="return false;">
-      <label for="link">Paste your link:</label>
-      <input type="url" id="link" placeholder="https://example.com" required>
-      <label>Choose a design:</label>
-      <div class="designs">
-        <button type="button" class="design-btn selected" data-design="classic">Classic</button>
-        <button type="button" class="design-btn" data-design="rounded">Rounded</button>
-        <button type="button" class="design-btn" data-design="colorful">Colorful</button>
-        <button type="button" class="design-btn" data-design="shadow">Shadow</button>
-        <button type="button" class="design-btn" data-design="soft">Soft</button>
-        <button type="button" class="design-btn" data-design="3d">3D</button>
-        <button type="button" class="design-btn" data-design="neon">Neon</button>
-        <button type="button" class="design-btn" data-design="frame">Frame</button>
-      </div>
-      <span class="preview-label">Preview:</span>
-      <div id="qrcode-preview">
-        <span class="placeholder">... <svg width="48" height="48" fill="none" stroke="#ffe066" stroke-width="2" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="7" rx="2"/>
-            <rect x="14" y="3" width="7" height="7" rx="2"/>
-            <rect x="14" y="14" width="7" height="7" rx="2"/>
-            <rect x="3" y="14" width="7" height="7" rx="2"/>
-          </svg>
-          <span>Your QR code will appear here</span>
-        </span>
-      </div>
-      <button id="download" type="button" disabled>Download QR Code</button>
-    </form>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <script>
-    // Design styles
-    const designStyles = {
-      classic: {
-        colorDark: "#fff",
-        colorLight: "#111",
-        style: ""
-      },
-      rounded: {
-        colorDark: "#ffe066",
-        colorLight: "#222",
-        style: "border-radius: 24px;"
-      },
-      colorful: {
-        colorDark: "#ffb347",
-        colorLight: "#6ee7b7",
-        style: "border: 3px solid #ffe066; border-radius: 12px;"
-      },
-      shadow: {
-        colorDark: "#fff",
-        colorLight: "#111",
-        style: "box-shadow: 0 8px 24px rgba(255,224,102,0.18); border-radius: 16px;"
-      },
-      soft: {
-        colorDark: "#6ee7b7",
-        colorLight: "#111",
-        style: "border-radius: 50%; border: 2px solid #ffe066;"
-      },
-      "3d": {
-        colorDark: "#ffe066",
-        colorLight: "#222",
-        style: "box-shadow: 0 4px 20px #ffe06699; border-radius: 20px;"
-      },
-      neon: {
-        colorDark: "#fff200",
-        colorLight: "#111",
-        style: "box-shadow: 0 0 12px #fff200, 0 0 24px #fff200; border-radius: 16px;"
-      },
-      frame: {
-        colorDark: "#fff",
-        colorLight: "#111",
-        style: "border: 4px solid #ffe066; border-radius: 8px;"
-      }
-    };
+    <header>
+        <div class="container">
+            <h1>BlogSEO Analyzer</h1>
+            <p>Optimize your blog content for better search engine rankings</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="hero">
+            <h1>Analyze Your Blog's SEO Performance</h1>
+            <p>Enter your blog URL below to get a comprehensive SEO analysis with actionable tips to improve your rankings.</p>
+        </section>
+        
+        <section class="url-form">
+            <form id="analyze-form">
+                <div class="form-group">
+                    <label for="blog-url">Blog URL</label>
+                    <input type="url" id="blog-url" class="form-control" placeholder="https://example.com/your-blog-post" required>
+                </div>
+                <div class="form-group">
+                    <label for="focus-keyword">Focus Keyword (optional)</label>
+                    <input type="text" id="focus-keyword" class="form-control" placeholder="e.g., content marketing, SEO tips">
+                </div>
+                <button type="submit" class="btn">Analyze Now</button>
+            </form>
+        </section>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing your blog post... This may take a moment.</p>
+        </div>
+        
+        <section class="results" id="results">
+            <div class="score-container">
+                <div class="score" id="seo-score">0</div>
+                <div class="score-label">SEO Score</div>
+            </div>
+            
+            <div class="analysis-section">
+                <h3>Content Analysis</h3>
+                <div id="content-analysis"></div>
+            </div>
+            
+            <div class="analysis-section">
+                <h3>Keyword Usage</h3>
+                <div id="keyword-analysis"></div>
+            </div>
+            
+            <div class="analysis-section">
+                <h3>Technical SEO</h3>
+                <div id="technical-analysis"></div>
+            </div>
+            
+            <div class="analysis-section">
+                <h3>Readability</h3>
+                <div id="readability-analysis"></div>
+            </div>
+            
+            <div class="analysis-section">
+                <h3>Links & Media</h3>
+                <div id="links-analysis"></div>
+            </div>
+        </section>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Comprehensive Analysis</h3>
+                <p>Get detailed insights on content quality, keyword usage, technical SEO, and more.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Keyword Optimization</h3>
+                <p>Analyze keyword density, placement, and competition to improve your rankings.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile Friendliness</h3>
+                <p>Ensure your blog is optimized for mobile devices to reach more readers.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Performance Analysis</h3>
+                <p>Check your blog's loading speed and identify ways to improve it.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Readability Score</h3>
+                <p>Make sure your content is easy to read and engaging for your audience.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>Link Structure</h3>
+                <p>Analyze your internal and external links for better SEO performance.</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BlogSEO Analyzer. All rights reserved.</p>
+        </div>
+    </footer>
 
-    // Elements
-    const linkInput = document.getElementById('link');
-    const designBtns = document.querySelectorAll('.design-btn');
-    const qrcodeDiv = document.getElementById('qrcode-preview');
-    const downloadBtn = document.getElementById('download');
-    let selectedDesign = 'classic';
-
-    // Helper: Remove all children from qrcodeDiv
-    function clearQRCode() {
-      while (qrcodeDiv.firstChild) {
-        qrcodeDiv.removeChild(qrcodeDiv.firstChild);
-      }
-    }
-
-    // Helper: Generate QR code
-    function generateQR(link, design) {
-      clearQRCode();
-      if (!link) {
-        const placeholder = document.createElement('span');
-        placeholder.className = 'placeholder';
-        placeholder.innerHTML = `
-          <svg width="48" height="48" fill="none" stroke="#ffe066" stroke-width="2" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="7" rx="2"/>
-            <rect x="14" y="3" width="7" height="7" rx="2"/>
-            <rect x="14" y="14" width="7" height="7" rx="2"/>
-            <rect x="3" y="14" width="7" height="7" rx="2"/>
-          </svg>
-          <span>Your QR code will appear here</span>
-        `;
-        qrcodeDiv.appendChild(placeholder);
-        downloadBtn.disabled = true;
-        return;
-      }
-      // Create a frame for the QR code
-      const frame = document.createElement('div');
-      frame.className = 'qr-frame';
-      qrcodeDiv.appendChild(frame);
-
-      // Create a temporary div for QRCode.js to use
-      const tempDiv = document.createElement('div');
-      frame.appendChild(tempDiv);
-      const opts = {
-        text: link,
-        width: 180,
-        height: 180,
-        colorDark: designStyles[design].colorDark,
-        colorLight: designStyles[design].colorLight,
-        correctLevel: QRCode.CorrectLevel.H
-      };
-      new QRCode(tempDiv, opts);
-
-      // Move the canvas/image out of tempDiv and apply style
-      setTimeout(() => {
-        let qrEl = tempDiv.querySelector('canvas') || tempDiv.querySelector('img');
-        if (qrEl) {
-          qrEl.style = designStyles[design].style;
-          frame.appendChild(qrEl);
-          tempDiv.remove();
-          downloadBtn.disabled = false;
+    <script>
+        document.getElementById('analyze-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const blogUrl = document.getElementById('blog-url').value;
+            const focusKeyword = document.getElementById('focus-keyword').value;
+            
+            // Show loading spinner
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            
+            // Simulate API call with setTimeout
+            setTimeout(function() {
+                analyzeContent(blogUrl, focusKeyword);
+                
+                // Hide loading spinner and show results
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('results').style.display = 'block';
+                
+                // Scroll to results
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        });
+        
+        function analyzeContent(url, keyword) {
+            // This is a simulation of the analysis results
+            // In a real implementation, this would be replaced with actual API calls
+            
+            // Calculate a random score between 60 and 95
+            const score = Math.floor(Math.random() * 36) + 60;
+            document.getElementById('seo-score').textContent = score;
+            
+            // Content analysis
+            const contentAnalysis = document.getElementById('content-analysis');
+            contentAnalysis.innerHTML = '';
+            
+            addAnalysisItem(contentAnalysis, 
+                'Content Length', 
+                score > 80 ? 'good' : 'warning',
+                score > 80 ? 'Your content is well-developed at approximately 1,500 words.' : 'Your content is around 800 words. Consider expanding to at least 1,200 words for better rankings.',
+                score > 80 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(contentAnalysis, 
+                'Content Structure', 
+                Math.random() > 0.4 ? 'good' : 'warning',
+                Math.random() > 0.4 ? 'Good use of headings and subheadings to structure your content.' : 'Consider adding more subheadings (H2, H3) to break up your content and improve readability.',
+                Math.random() > 0.4 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(contentAnalysis, 
+                'Original Content', 
+                Math.random() > 0.2 ? 'good' : 'bad',
+                Math.random() > 0.2 ? 'Your content appears to be original and unique.' : 'Some parts of your content may be similar to existing content on the web. Ensure all content is original.',
+                Math.random() > 0.2 ? '✅' : '❌'
+            );
+            
+            // Keyword analysis
+            const keywordAnalysis = document.getElementById('keyword-analysis');
+            keywordAnalysis.innerHTML = '';
+            
+            if (keyword) {
+                addAnalysisItem(keywordAnalysis, 
+                    'Keyword Density', 
+                    Math.random() > 0.5 ? 'good' : 'warning',
+                    Math.random() > 0.5 ? `Your keyword "${keyword}" appears at a good density of approximately 1.8%.` : `Your keyword "${keyword}" density is too low (0.5%). Try to include it more naturally throughout your content.`,
+                    Math.random() > 0.5 ? '✅' : '⚠️'
+                );
+                
+                addAnalysisItem(keywordAnalysis, 
+                    'Keyword in Title', 
+                    Math.random() > 0.3 ? 'good' : 'bad',
+                    Math.random() > 0.3 ? `Your focus keyword "${keyword}" appears in the title tag.` : `Your focus keyword "${keyword}" is missing from the title tag. Consider including it for better SEO.`,
+                    Math.random() > 0.3 ? '✅' : '❌'
+                );
+                
+                addAnalysisItem(keywordAnalysis, 
+                    'Keyword in Headings', 
+                    Math.random() > 0.4 ? 'good' : 'warning',
+                    Math.random() > 0.4 ? `Your focus keyword "${keyword}" appears in at least one heading tag.` : `Consider including your focus keyword "${keyword}" in at least one H2 heading.`,
+                    Math.random() > 0.4 ? '✅' : '⚠️'
+                );
+                
+                addAnalysisItem(keywordAnalysis, 
+                    'Keyword in First Paragraph', 
+                    Math.random() > 0.5 ? 'good' : 'warning',
+                    Math.random() > 0.5 ? `Your focus keyword "${keyword}" appears in the first paragraph.` : `Consider including your focus keyword "${keyword}" in the first paragraph of your content.`,
+                    Math.random() > 0.5 ? '✅' : '⚠️'
+                );
+                
+                addAnalysisItem(keywordAnalysis, 
+                    'Related Keywords', 
+                    'good',
+                    `We found several related keywords in your content. Consider also targeting: "${keyword} tips", "${keyword} strategies", "how to improve ${keyword}".`,
+                    '✅'
+                );
+            } else {
+                addAnalysisItem(keywordAnalysis, 
+                    'No Focus Keyword', 
+                    'warning',
+                    'You haven\'t specified a focus keyword. Adding one will provide more detailed keyword analysis.',
+                    '⚠️'
+                );
+            }
+            
+            // Technical analysis
+            const technicalAnalysis = document.getElementById('technical-analysis');
+            technicalAnalysis.innerHTML = '';
+            
+            addAnalysisItem(technicalAnalysis, 
+                'Meta Title', 
+                Math.random() > 0.3 ? 'good' : 'warning',
+                Math.random() > 0.3 ? 'Your meta title is well-optimized at 58 characters.' : 'Your meta title is too long at 72 characters. Keep it under 60 characters to avoid truncation in search results.',
+                Math.random() > 0.3 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(technicalAnalysis, 
+                'Meta Description', 
+                Math.random() > 0.4 ? 'good' : 'warning',
+                Math.random() > 0.4 ? 'Your meta description is well-optimized at 145 characters.' : 'Your meta description is missing or too short. Aim for 120-155 characters to improve click-through rates.',
+                Math.random() > 0.4 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(technicalAnalysis, 
+                'URL Structure', 
+                Math.random() > 0.3 ? 'good' : 'warning',
+                Math.random() > 0.3 ? 'Your URL is concise and contains relevant keywords.' : 'Your URL is too long or contains unnecessary parameters. Consider simplifying it.',
+                Math.random() > 0.3 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(technicalAnalysis, 
+                'Mobile Friendliness', 
+                Math.random() > 0.2 ? 'good' : 'bad',
+                Math.random() > 0.2 ? 'Your blog appears to be mobile-friendly.' : 'Your blog may not be fully optimized for mobile devices. Consider improving mobile responsiveness.',
+                Math.random() > 0.2 ? '✅' : '❌'
+            );
+            
+            addAnalysisItem(technicalAnalysis, 
+                'Page Loading Speed', 
+                Math.random() > 0.5 ? 'good' : 'warning',
+                Math.random() > 0.5 ? 'Your page loads quickly (1.8s).' : 'Your page takes 3.5s to load. Consider optimizing images and reducing server response time.',
+                Math.random() > 0.5 ? '✅' : '⚠️'
+            );
+            
+            // Readability analysis
+            const readabilityAnalysis = document.getElementById('readability-analysis');
+            readabilityAnalysis.innerHTML = '';
+            
+            addAnalysisItem(readabilityAnalysis, 
+                'Flesch Reading Ease', 
+                Math.random() > 0.4 ? 'good' : 'warning',
+                Math.random() > 0.4 ? 'Your content has a good readability score of 68.5, making it accessible to a wide audience.' : 'Your content has a readability score of 45.2, which may be difficult for some readers. Consider simplifying your language.',
+                Math.random() > 0.4 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(readabilityAnalysis, 
+                'Sentence Length', 
+                Math.random() > 0.5 ? 'good' : 'warning',
+                Math.random() > 0.5 ? 'Your sentences have a good average length of 15 words.' : 'Some of your sentences are too long (over 25 words). Consider breaking them up for better readability.',
+                Math.random() > 0.5 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(readabilityAnalysis, 
+                'Paragraph Length', 
+                Math.random() > 0.4 ? 'good' : 'warning',
+                Math.random() > 0.4 ? 'Your paragraphs are well-structured with an average of 3-4 sentences each.' : 'Some paragraphs are too long. Consider breaking them up into smaller chunks for better readability.',
+                Math.random() > 0.4 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(readabilityAnalysis, 
+                'Active Voice', 
+                Math.random() > 0.6 ? 'good' : 'warning',
+                Math.random() > 0.6 ? 'You use active voice effectively throughout your content.' : 'Consider using more active voice instead of passive voice to make your content more engaging.',
+                Math.random() > 0.6 ? '✅' : '⚠️'
+            );
+            
+            // Links and media analysis
+            const linksAnalysis = document.getElementById('links-analysis');
+            linksAnalysis.innerHTML = '';
+            
+            addAnalysisItem(linksAnalysis, 
+                'Internal Links', 
+                Math.random() > 0.5 ? 'good' : 'warning',
+                Math.random() > 0.5 ? 'You have a good number of internal links (6) pointing to relevant content on your site.' : 'Consider adding more internal links to other relevant content on your site.',
+                Math.random() > 0.5 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(linksAnalysis, 
+                'External Links', 
+                Math.random() > 0.4 ? 'good' : 'warning',
+                Math.random() > 0.4 ? 'You have a good number of external links (4) to authoritative sources.' : 'Consider adding more external links to authoritative sources to boost your credibility.',
+                Math.random() > 0.4 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(linksAnalysis, 
+                'Image Optimization', 
+                Math.random() > 0.3 ? 'good' : 'warning',
+                Math.random() > 0.3 ? 'All images have appropriate alt text and are well-optimized.' : 'Some images are missing alt text. Add descriptive alt text to all images for better accessibility and SEO.',
+                Math.random() > 0.3 ? '✅' : '⚠️'
+            );
+            
+            addAnalysisItem(linksAnalysis, 
+                'Media Richness', 
+                Math.random() > 0.5 ? 'good' : 'warning',
+                Math.random() > 0.5 ? 'Your content includes a good mix of text, images, and other media elements.' : 'Consider adding more visual elements like images, videos, or infographics to make your content more engaging.',
+                Math.random() > 0.5 ? '✅' : '⚠️'
+            );
         }
-      }, 100);
-
-      // Add CTA
-      const cta = document.createElement('span');
-      cta.className = 'cta-text';
-      cta.textContent = 'Scan Me!';
-      qrcodeDiv.appendChild(cta);
-    }
-
-    // Helper: Download QR code
-    function downloadQR() {
-      const qrEl = qrcodeDiv.querySelector('.qr-frame canvas');
-      if (qrEl) {
-        const url = qrEl.toDataURL("image/png");
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = "qrcode.png";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-    }
-
-    // Design button selection
-    designBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        designBtns.forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedDesign = btn.getAttribute('data-design');
-        generateQR(linkInput.value.trim(), selectedDesign);
-      });
-    });
-
-    // Live preview on input
-    linkInput.addEventListener('input', () => {
-      generateQR(linkInput.value.trim(), selectedDesign);
-    });
-
-    // Download button
-    downloadBtn.addEventListener('click', () => {
-      if (!downloadBtn.disabled) downloadQR();
-    });
-
-    // Initial state
-    generateQR("", selectedDesign);
-  </script>
+        
+        function addAnalysisItem(container, title, status, description, icon) {
+            const item = document.createElement('div');
+            item.className = `analysis-item ${status}`;
+            
+            item.innerHTML = `
+                <h4><span>${icon}</span> ${title}</h4>
+                <p>${description}</p>
+            `;
+            
+            container.appendChild(item);
+        }
+    </script>
 </body>
 </html>
