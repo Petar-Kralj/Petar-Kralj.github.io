@@ -1,628 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlogSEO Analyzer - Optimize Your Blog Content</title>
-    <style>
-        :root {
-            --primary: #4a6bff;
-            --secondary: #34c759;
-            --dark: #333333;
-            --light: #f8f9fa;
-            --danger: #ff3b30;
-            --warning: #ffcc00;
-            --success: #34c759;
-            --info: #5ac8fa;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
-        }
-        
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 0;
-        }
-        
-        .hero {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            color: #666;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .url-form {
-            background-color: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 3rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn:hover {
-            background-color: #3a5ae8;
-        }
-        
-        .results {
-            display: none;
-            background-color: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .score-container {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .score {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
-        .score-label {
-            font-size: 1.2rem;
-            color: #666;
-        }
-        
-        .analysis-section {
-            margin-bottom: 2rem;
-        }
-        
-        .analysis-section h3 {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .analysis-item {
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 5px;
-        }
-        
-        .good {
-            background-color: rgba(52, 199, 89, 0.1);
-            border-left: 4px solid var(--success);
-        }
-        
-        .warning {
-            background-color: rgba(255, 204, 0, 0.1);
-            border-left: 4px solid var(--warning);
-        }
-        
-        .bad {
-            background-color: rgba(255, 59, 48, 0.1);
-            border-left: 4px solid var(--danger);
-        }
-        
-        .analysis-item h4 {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .analysis-item h4 span {
-            margin-right: 0.5rem;
-        }
-        
-        .analysis-item p {
-            color: #666;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .feature-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .feature-card h3 {
-            margin-bottom: 1rem;
-        }
-        
-        footer {
-            background-color: var(--dark);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 2rem 0;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-        
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>MemeCoin Times: Trading Tutorials, Tips & Strategies</title>
+  <meta name="description" content="Master meme coin trading with expert tutorials, real tips, and curated free courses. Learn strategies, avoid scams, and stay ahead in the fast-moving world of meme coins.">
+  <meta name="keywords" content="meme coin trading, meme coin tutorials, crypto trading tips, meme coin strategies, avoid meme coin scams, best meme coins, how to trade meme coins, crypto education">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="MemeCoin Times: Trading Tutorials, Tips & Strategies">
+  <meta property="og:description" content="Expert guides, tips, and curated free courses for meme coin trading. Stay ahead of the market!">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
+  <link rel="canonical" href="https://yourdomain.com/">
+  <style>
+    :root {
+      --primary: #22223b;
+      --secondary: #4a4e69;
+      --accent: #f2e9e4;
+      --highlight: #9a8c98;
+      --success: #e8f5e9;
+      --warning: #fff3e0;
+      --link: #3a86ff;
+    }
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--accent);
+      color: var(--primary);
+      margin: 0;
+    }
+    header {
+      background: #fff;
+      border-bottom: 2px solid var(--highlight);
+      padding: 32px 0 12px 0;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    header h1 {
+      font-size: 2.8rem;
+      letter-spacing: 1.5px;
+      margin: 0;
+      font-weight: bold;
+      color: var(--secondary);
+    }
+    nav {
+      margin: 18px 0 0 0;
+      text-align: center;
+    }
+    nav a {
+      color: var(--primary);
+      text-decoration: none;
+      margin: 0 18px;
+      font-weight: 600;
+      font-size: 1.08rem;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--link);
+    }
+    .container {
+      max-width: 950px;
+      margin: 36px auto;
+      background: #fff;
+      padding: 40px 28px;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    h2 {
+      font-size: 2.1rem;
+      margin-top: 38px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--highlight);
+      padding-bottom: 8px;
+      color: var(--secondary);
+    }
+    h3 {
+      font-size: 1.25rem;
+      margin-top: 28px;
+      color: var(--primary);
+    }
+    ul, ol {
+      line-height: 1.7;
+      margin-left: 26px;
+    }
+    .course-links {
+      background: var(--accent);
+      border-left: 5px solid var(--highlight);
+      padding: 18px 22px;
+      margin: 28px 0;
+      border-radius: 7px;
+    }
+    .tip {
+      background: var(--success);
+      border-left: 5px solid #66bb6a;
+      padding: 14px 20px;
+      margin: 20px 0;
+      border-radius: 6px;
+      font-style: italic;
+    }
+    .warning {
+      background: var(--warning);
+      border-left: 5px solid #ffa726;
+      padding: 14px 20px;
+      margin: 20px 0;
+      border-radius: 6px;
+      font-style: italic;
+    }
+    a {
+      color: var(--link);
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: var(--secondary);
+      text-decoration: none;
+    }
+    footer {
+      background: var(--secondary);
+      color: #fff;
+      text-align: center;
+      padding: 30px 0 10px 0;
+      margin-top: 54px;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+    }
+    @media (max-width: 650px) {
+      .container { padding: 18px 5px; }
+      header h1 { font-size: 1.45rem; }
+      nav a { font-size: 1rem; margin: 0 7px; }
+      h2 { font-size: 1.2rem; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>BlogSEO Analyzer</h1>
-            <p>Optimize your blog content for better search engine rankings</p>
-        </div>
-    </header>
-    
-    <main class="container">
-        <section class="hero">
-            <h1>Analyze Your Blog's SEO Performance</h1>
-            <p>Enter your blog URL below to get a comprehensive SEO analysis with actionable tips to improve your rankings.</p>
-        </section>
-        
-        <section class="url-form">
-            <form id="analyze-form">
-                <div class="form-group">
-                    <label for="blog-url">Blog URL</label>
-                    <input type="url" id="blog-url" class="form-control" placeholder="https://example.com/your-blog-post" required>
-                </div>
-                <div class="form-group">
-                    <label for="focus-keyword">Focus Keyword (optional)</label>
-                    <input type="text" id="focus-keyword" class="form-control" placeholder="e.g., content marketing, SEO tips">
-                </div>
-                <button type="submit" class="btn">Analyze Now</button>
-            </form>
-        </section>
-        
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Analyzing your blog post... This may take a moment.</p>
-        </div>
-        
-        <section class="results" id="results">
-            <div class="score-container">
-                <div class="score" id="seo-score">0</div>
-                <div class="score-label">SEO Score</div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>Content Analysis</h3>
-                <div id="content-analysis"></div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>Keyword Usage</h3>
-                <div id="keyword-analysis"></div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>Technical SEO</h3>
-                <div id="technical-analysis"></div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>Readability</h3>
-                <div id="readability-analysis"></div>
-            </div>
-            
-            <div class="analysis-section">
-                <h3>Links & Media</h3>
-                <div id="links-analysis"></div>
-            </div>
-        </section>
-        
-        <section class="features">
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Comprehensive Analysis</h3>
-                <p>Get detailed insights on content quality, keyword usage, technical SEO, and more.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔍</div>
-                <h3>Keyword Optimization</h3>
-                <p>Analyze keyword density, placement, and competition to improve your rankings.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3>Mobile Friendliness</h3>
-                <p>Ensure your blog is optimized for mobile devices to reach more readers.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Performance Analysis</h3>
-                <p>Check your blog's loading speed and identify ways to improve it.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📝</div>
-                <h3>Readability Score</h3>
-                <p>Make sure your content is easy to read and engaging for your audience.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔗</div>
-                <h3>Link Structure</h3>
-                <p>Analyze your internal and external links for better SEO performance.</p>
-            </div>
-        </section>
-        <section class="seo-content container">
-            <h2>The Ultimate Blog SEO Analysis Tool for Content Creators</h2>
-            
-            <p>BlogSEO Analyzer is the comprehensive solution for bloggers, content marketers, and website owners looking to improve their search engine rankings. Our free blog SEO tool helps you analyze any blog post through its URL, providing actionable insights to optimize your content for better visibility in search results.</p>
-            
-            <div class="seo-features">
-                <div class="feature">
-                    <h3>Complete Keyword Analysis</h3>
-                    <p>Discover the perfect keywords for your blog with our advanced keyword research capabilities. Our tool analyzes your content to identify primary and secondary keywords, checks keyword density, and suggests related keywords to boost your ranking potential. Whether you're targeting long-tail keywords or competitive terms, our tool provides the data you need to make informed decisions.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>Content Optimization Recommendations</h3>
-                    <p>Get personalized recommendations to improve your blog's SEO performance. Our analyzer evaluates content length, readability, heading structure, and keyword placement to ensure your blog follows best practices for search engine optimization. Turn your good content into great content that ranks higher in search results.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>Technical SEO Evaluation</h3>
-                    <p>Beyond content, our tool examines critical technical SEO factors including meta titles, meta descriptions, URL structure, mobile-friendliness, and page loading speed. These technical elements are essential for achieving top rankings in today's competitive search landscape.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>Link and Media Analysis</h3>
-                    <p>Optimize your internal and external links to build authority and improve user experience. Our tool analyzes your link structure and provides recommendations for better link distribution. We also check image optimization, including alt text usage, to ensure your visual content contributes to your SEO efforts.</p>
-                </div>
-            </div>
-            
-            <div class="seo-benefits">
-                <h3>Why Use BlogSEO Analyzer for Your Content?</h3>
-                <ul>
-                    <li>Analyze any blog post on any domain or platform</li>
-                    <li>Get instant SEO scores and actionable recommendations</li>
-                    <li>Identify low-competition keywords with good search volume</li>
-                    <li>Improve readability and user engagement metrics</li>
-                    <li>Optimize for both Google and Bing search engines</li>
-                    <li>Track improvements over time with historical analysis</li>
-                </ul>
-            </div>
-            
-            <div class="seo-tips">
-                <h3>Blog SEO Best Practices</h3>
-                <p>Successful blog SEO requires a strategic approach to keyword research and content optimization. Focus on medium search volume keywords with low competition for the best results. Include your target keywords naturally throughout your content, especially in titles, headings, and the first paragraph. Create comprehensive, well-structured content that answers your audience's questions. Add internal links to related content and external links to authoritative sources to boost your credibility.</p>
-                
-                <p>Whether you're writing quick weeknight dinner recipes, creating 30-minute meal guides, or sharing one-pot dinner ideas, our tool helps you optimize your food blog for maximum visibility. From technical website keyword analysis to content readability scores, BlogSEO Analyzer provides everything you need to improve your search rankings and drive more organic traffic to your blog.</p>
-            </div>
-            
-            <div class="cta-section">
-                <h3>Ready to Optimize Your Blog?</h3>
-                <p>Enter your blog URL above and discover how to improve your SEO performance today. Our free keyword tool and blog analyzer will help you identify opportunities to rank higher and attract more readers to your content.</p>
-            </div>
-        </section>
-        
-    </main>
-    
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 BlogSEO Analyzer. All rights reserved.</p>
-        </div>
-    </footer>
+  <header>
+    <h1>MemeCoin Times</h1>
+    <nav>
+      <a href="#start">Start Here</a>
+      <a href="#courses">Free Courses</a>
+      <a href="#tips">Tips & Tricks</a>
+      <a href="#strategies">Strategies</a>
+      <a href="#scams">Avoiding Scams</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </header>
+  <main class="container">
+    <h2 id="start">How to Start Trading Meme Coins</h2>
+    <ol>
+      <li><strong>Pick a Trading Platform:</strong> Use a CEX (like Binance, KuCoin) for safety, or a DEX (like Uniswap, PancakeSwap) for early access. CEXs are simpler for beginners, DEXs offer more opportunities but require caution.</li>
+      <li><strong>Set Up a Wallet:</strong> Install MetaMask or Trust Wallet for DEX trading. Store your seed phrase offline and never share it.</li>
+      <li><strong>Fund Your Wallet:</strong> Buy ETH (for Ethereum-based coins) or BNB (for BNB Chain coins) on a CEX, then transfer to your wallet.</li>
+      <li><strong>Research Meme Coins:</strong> Use CoinGecko, Twitter, and community forums. Check liquidity, number of holders, and team transparency.</li>
+      <li><strong>Swap for Meme Coins:</strong> On DEXs, connect your wallet, paste the contract address, set slippage (3–10%), and swap. Always double-check the contract address.</li>
+      <li><strong>Track & Sell:</strong> Monitor your coins using MetaMask, DEXTools, or DEXScreener. Sell back to ETH/BNB and withdraw to your CEX to realize profits.</li>
+    </ol>
+    <div class="warning">
+      Never invest more than you can afford to lose. Meme coins are extremely volatile and driven by hype.
+    </div>
 
-    <script>
-        document.getElementById('analyze-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const blogUrl = document.getElementById('blog-url').value;
-            const focusKeyword = document.getElementById('focus-keyword').value;
-            
-            // Show loading spinner
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('results').style.display = 'none';
-            
-            // Simulate API call with setTimeout
-            setTimeout(function() {
-                analyzeContent(blogUrl, focusKeyword);
-                
-                // Hide loading spinner and show results
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('results').style.display = 'block';
-                
-                // Scroll to results
-                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-            }, 2000);
-        });
-        
-        function analyzeContent(url, keyword) {
-            // This is a simulation of the analysis results
-            // In a real implementation, this would be replaced with actual API calls
-            
-            // Calculate a random score between 60 and 95
-            const score = Math.floor(Math.random() * 36) + 60;
-            document.getElementById('seo-score').textContent = score;
-            
-            // Content analysis
-            const contentAnalysis = document.getElementById('content-analysis');
-            contentAnalysis.innerHTML = '';
-            
-            addAnalysisItem(contentAnalysis, 
-                'Content Length', 
-                score > 80 ? 'good' : 'warning',
-                score > 80 ? 'Your content is well-developed at approximately 1,500 words.' : 'Your content is around 800 words. Consider expanding to at least 1,200 words for better rankings.',
-                score > 80 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(contentAnalysis, 
-                'Content Structure', 
-                Math.random() > 0.4 ? 'good' : 'warning',
-                Math.random() > 0.4 ? 'Good use of headings and subheadings to structure your content.' : 'Consider adding more subheadings (H2, H3) to break up your content and improve readability.',
-                Math.random() > 0.4 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(contentAnalysis, 
-                'Original Content', 
-                Math.random() > 0.2 ? 'good' : 'bad',
-                Math.random() > 0.2 ? 'Your content appears to be original and unique.' : 'Some parts of your content may be similar to existing content on the web. Ensure all content is original.',
-                Math.random() > 0.2 ? '✅' : '❌'
-            );
-            
-            // Keyword analysis
-            const keywordAnalysis = document.getElementById('keyword-analysis');
-            keywordAnalysis.innerHTML = '';
-            
-            if (keyword) {
-                addAnalysisItem(keywordAnalysis, 
-                    'Keyword Density', 
-                    Math.random() > 0.5 ? 'good' : 'warning',
-                    Math.random() > 0.5 ? `Your keyword "${keyword}" appears at a good density of approximately 1.8%.` : `Your keyword "${keyword}" density is too low (0.5%). Try to include it more naturally throughout your content.`,
-                    Math.random() > 0.5 ? '✅' : '⚠️'
-                );
-                
-                addAnalysisItem(keywordAnalysis, 
-                    'Keyword in Title', 
-                    Math.random() > 0.3 ? 'good' : 'bad',
-                    Math.random() > 0.3 ? `Your focus keyword "${keyword}" appears in the title tag.` : `Your focus keyword "${keyword}" is missing from the title tag. Consider including it for better SEO.`,
-                    Math.random() > 0.3 ? '✅' : '❌'
-                );
-                
-                addAnalysisItem(keywordAnalysis, 
-                    'Keyword in Headings', 
-                    Math.random() > 0.4 ? 'good' : 'warning',
-                    Math.random() > 0.4 ? `Your focus keyword "${keyword}" appears in at least one heading tag.` : `Consider including your focus keyword "${keyword}" in at least one H2 heading.`,
-                    Math.random() > 0.4 ? '✅' : '⚠️'
-                );
-                
-                addAnalysisItem(keywordAnalysis, 
-                    'Keyword in First Paragraph', 
-                    Math.random() > 0.5 ? 'good' : 'warning',
-                    Math.random() > 0.5 ? `Your focus keyword "${keyword}" appears in the first paragraph.` : `Consider including your focus keyword "${keyword}" in the first paragraph of your content.`,
-                    Math.random() > 0.5 ? '✅' : '⚠️'
-                );
-                
-                addAnalysisItem(keywordAnalysis, 
-                    'Related Keywords', 
-                    'good',
-                    `We found several related keywords in your content. Consider also targeting: "${keyword} tips", "${keyword} strategies", "how to improve ${keyword}".`,
-                    '✅'
-                );
-            } else {
-                addAnalysisItem(keywordAnalysis, 
-                    'No Focus Keyword', 
-                    'warning',
-                    'You haven\'t specified a focus keyword. Adding one will provide more detailed keyword analysis.',
-                    '⚠️'
-                );
-            }
-            
-            // Technical analysis
-            const technicalAnalysis = document.getElementById('technical-analysis');
-            technicalAnalysis.innerHTML = '';
-            
-            addAnalysisItem(technicalAnalysis, 
-                'Meta Title', 
-                Math.random() > 0.3 ? 'good' : 'warning',
-                Math.random() > 0.3 ? 'Your meta title is well-optimized at 58 characters.' : 'Your meta title is too long at 72 characters. Keep it under 60 characters to avoid truncation in search results.',
-                Math.random() > 0.3 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(technicalAnalysis, 
-                'Meta Description', 
-                Math.random() > 0.4 ? 'good' : 'warning',
-                Math.random() > 0.4 ? 'Your meta description is well-optimized at 145 characters.' : 'Your meta description is missing or too short. Aim for 120-155 characters to improve click-through rates.',
-                Math.random() > 0.4 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(technicalAnalysis, 
-                'URL Structure', 
-                Math.random() > 0.3 ? 'good' : 'warning',
-                Math.random() > 0.3 ? 'Your URL is concise and contains relevant keywords.' : 'Your URL is too long or contains unnecessary parameters. Consider simplifying it.',
-                Math.random() > 0.3 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(technicalAnalysis, 
-                'Mobile Friendliness', 
-                Math.random() > 0.2 ? 'good' : 'bad',
-                Math.random() > 0.2 ? 'Your blog appears to be mobile-friendly.' : 'Your blog may not be fully optimized for mobile devices. Consider improving mobile responsiveness.',
-                Math.random() > 0.2 ? '✅' : '❌'
-            );
-            
-            addAnalysisItem(technicalAnalysis, 
-                'Page Loading Speed', 
-                Math.random() > 0.5 ? 'good' : 'warning',
-                Math.random() > 0.5 ? 'Your page loads quickly (1.8s).' : 'Your page takes 3.5s to load. Consider optimizing images and reducing server response time.',
-                Math.random() > 0.5 ? '✅' : '⚠️'
-            );
-            
-            // Readability analysis
-            const readabilityAnalysis = document.getElementById('readability-analysis');
-            readabilityAnalysis.innerHTML = '';
-            
-            addAnalysisItem(readabilityAnalysis, 
-                'Flesch Reading Ease', 
-                Math.random() > 0.4 ? 'good' : 'warning',
-                Math.random() > 0.4 ? 'Your content has a good readability score of 68.5, making it accessible to a wide audience.' : 'Your content has a readability score of 45.2, which may be difficult for some readers. Consider simplifying your language.',
-                Math.random() > 0.4 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(readabilityAnalysis, 
-                'Sentence Length', 
-                Math.random() > 0.5 ? 'good' : 'warning',
-                Math.random() > 0.5 ? 'Your sentences have a good average length of 15 words.' : 'Some of your sentences are too long (over 25 words). Consider breaking them up for better readability.',
-                Math.random() > 0.5 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(readabilityAnalysis, 
-                'Paragraph Length', 
-                Math.random() > 0.4 ? 'good' : 'warning',
-                Math.random() > 0.4 ? 'Your paragraphs are well-structured with an average of 3-4 sentences each.' : 'Some paragraphs are too long. Consider breaking them up into smaller chunks for better readability.',
-                Math.random() > 0.4 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(readabilityAnalysis, 
-                'Active Voice', 
-                Math.random() > 0.6 ? 'good' : 'warning',
-                Math.random() > 0.6 ? 'You use active voice effectively throughout your content.' : 'Consider using more active voice instead of passive voice to make your content more engaging.',
-                Math.random() > 0.6 ? '✅' : '⚠️'
-            );
-            
-            // Links and media analysis
-            const linksAnalysis = document.getElementById('links-analysis');
-            linksAnalysis.innerHTML = '';
-            
-            addAnalysisItem(linksAnalysis, 
-                'Internal Links', 
-                Math.random() > 0.5 ? 'good' : 'warning',
-                Math.random() > 0.5 ? 'You have a good number of internal links (6) pointing to relevant content on your site.' : 'Consider adding more internal links to other relevant content on your site.',
-                Math.random() > 0.5 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(linksAnalysis, 
-                'External Links', 
-                Math.random() > 0.4 ? 'good' : 'warning',
-                Math.random() > 0.4 ? 'You have a good number of external links (4) to authoritative sources.' : 'Consider adding more external links to authoritative sources to boost your credibility.',
-                Math.random() > 0.4 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(linksAnalysis, 
-                'Image Optimization', 
-                Math.random() > 0.3 ? 'good' : 'warning',
-                Math.random() > 0.3 ? 'All images have appropriate alt text and are well-optimized.' : 'Some images are missing alt text. Add descriptive alt text to all images for better accessibility and SEO.',
-                Math.random() > 0.3 ? '✅' : '⚠️'
-            );
-            
-            addAnalysisItem(linksAnalysis, 
-                'Media Richness', 
-                Math.random() > 0.5 ? 'good' : 'warning',
-                Math.random() > 0.5 ? 'Your content includes a good mix of text, images, and other media elements.' : 'Consider adding more visual elements like images, videos, or infographics to make your content more engaging.',
-                Math.random() > 0.5 ? '✅' : '⚠️'
-            );
-        }
-        
-        function addAnalysisItem(container, title, status, description, icon) {
-            const item = document.createElement('div');
-            item.className = `analysis-item ${status}`;
-            
-            item.innerHTML = `
-                <h4><span>${icon}</span> ${title}</h4>
-                <p>${description}</p>
-            `;
-            
-            container.appendChild(item);
-        }
-    </script>
+    <h2 id="courses">Top Free & Open Meme Coin Trading Courses</h2>
+    <div class="course-links">
+      <ul>
+        <li>
+          <a href="https://www.udemy.com/course/trading-memes/" target="_blank" rel="noopener">Meme Coin Experts Course (Udemy)</a> — Solana meme coins, project research, scam avoidance, risk management.
+        </li>
+        <li>
+          <a href="https://whop.com/meme-coin-trading-mastery/" target="_blank" rel="noopener">Meme Coins Trading Mastery (Whop)</a> — Free course, trading bot, and Telegram group for catching new trends.
+        </li>
+        <li>
+          <a href="https://www.udemy.com/course/meme-coins-trading-for-begginer-free-meme-coin-ebook/" target="_blank" rel="noopener">Meme Coins Trading for Beginners (Udemy)</a> — 30-minute crash course for beginners, includes a free ebook.
+        </li>
+        <li>
+          <a href="https://www.udemy.com/course/meme-coin-trading-course/" target="_blank" rel="noopener">The Ultimate Meme Coin Trading Course (Udemy)</a> — Strategies, portfolio setup, risk management, and market insights.
+        </li>
+        <li>
+          <a href="https://techpoint.africa/guide/a-complete-guide-to-trading-meme-coins/" target="_blank" rel="noopener">Complete Guide to Trading Meme Coins (Techpoint Africa)</a> — Step-by-step beginner’s guide.
+        </li>
+        <li>
+          <a href="https://www.youtube.com/watch?v=cvOFCHIuyNo" target="_blank" rel="noopener">Full Crypto & Memecoin Trading Course (YouTube)</a> — Free video course covering all basics.
+        </li>
+      </ul>
+    </div>
+
+    <h2 id="tips">Essential Meme Coin Trading Tips & Tricks</h2>
+    <ul>
+      <li>Start with small amounts — limit meme coin exposure to 1–2% of your portfolio.</li>
+      <li>Diversify across several promising coins, not just one.</li>
+      <li>Research deeply: Use DEXTools, CoinGecko, and Twitter to study liquidity, holders, and team transparency.</li>
+      <li>Monitor social media and news for hype cycles — meme coins move fast!</li>
+      <li>Set clear exit strategies: Know your profit targets and stop-losses before you buy.</li>
+      <li>Use technical analysis: Watch for volume spikes, chart patterns, and market sentiment.</li>
+      <li>Explore staking or farming for passive income, but only on reputable projects.</li>
+    </ul>
+    <div class="tip">
+      <strong>Pro Tip:</strong> Use <a href="https://tokensniffer.com/" target="_blank" rel="noopener">TokenSniffer</a> and <a href="https://rugdoc.io/" target="_blank" rel="noopener">RugDoc.io</a> to check for scam tokens before buying.
+    </div>
+
+    <h2 id="strategies">Popular Meme Coin Trading Strategies</h2>
+    <ul>
+      <li><strong>Day Trading:</strong> Profit from intraday price swings. Requires discipline and fast action.</li>
+      <li><strong>Swing Trading:</strong> Buy the dips, sell the hype. Hold positions for days or weeks.</li>
+      <li><strong>Scalping:</strong> Make multiple quick trades for small profits, ideal in high volatility.</li>
+      <li><strong>HODLing:</strong> Hold coins with strong communities for the long term (e.g., Dogecoin).</li>
+      <li><strong>Futures Trading:</strong> High-risk, advanced strategy using leverage — only for experienced traders.</li>
+    </ul>
+    <div class="tip">
+      <strong>Expert Advice:</strong> Most meme coin profits come from catching the trend early and exiting before the hype fades. Don’t get greedy—secure profits along the way!
+    </div>
+
+    <h2 id="scams">How to Avoid Meme Coin Scams</h2>
+    <ul>
+      <li>Double-check contract addresses — only use official sources like CoinGecko.</li>
+      <li>Beware of airdrop scams: Never interact with suspicious tokens sent to your wallet.</li>
+      <li>Watch for rug pulls: Sudden price spikes with no selling activity are a red flag.</li>
+      <li>Honeypots: Some tokens let you buy but not sell. Test with a small amount first.</li>
+      <li>Check for locked liquidity and transparent teams.</li>
+      <li>Analyze social media: Look for active, transparent developers.</li>
+      <li>Never click random Telegram/Twitter links or give out your seed phrase.</li>
+    </ul>
+    <div class="warning">
+      If it sounds too good to be true, it probably is. Always DYOR (Do Your Own Research)!
+    </div>
+
+    <h2 id="faq">FAQ</h2>
+    <h3>What are meme coins?</h3>
+    <p>Meme coins are cryptocurrencies inspired by internet memes or pop culture — often highly volatile and community-driven, like Dogecoin and Shiba Inu.</p>
+
+    <h3>Are meme coins a good investment?</h3>
+    <p>Meme coins are speculative and risky. Some traders make big profits, but many lose money. Only invest what you can afford to lose.</p>
+
+    <h3>How can I find new meme coins early?</h3>
+    <p>Monitor DEX listings, Twitter, and CoinGecko for trending tokens. Join Telegram communities for early news, but beware of scams.</p>
+
+    <h3>What tools should I use?</h3>
+    <p>DEXTools, DEXScreener, TokenSniffer, and RugDoc.io are essential for research and scam detection.</p>
+
+    <h3>Can I earn passive income?</h3>
+    <p>Yes, through staking or yield farming on some meme coin projects. Always research the project first!</p>
+
+    <div class="tip">
+      <strong>Bookmark this site!</strong> New tutorials, live market updates, and exclusive trading tips are added regularly.
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 MemeCoin Times. Not financial advice. Always DYOR.</p>
+  </footer>
 </body>
 </html>
