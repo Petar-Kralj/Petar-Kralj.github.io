@@ -1,250 +1,412 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MemeCoin Times: Trading Tutorials, Tips & Strategies</title>
-  <meta name="description" content="Master meme coin trading with expert tutorials, real tips, and curated free courses. Learn strategies, avoid scams, and stay ahead in the fast-moving world of meme coins.">
-  <meta name="keywords" content="meme coin trading, meme coin tutorials, crypto trading tips, meme coin strategies, avoid meme coin scams, best meme coins, how to trade meme coins, crypto education">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:title" content="MemeCoin Times: Trading Tutorials, Tips & Strategies">
-  <meta property="og:description" content="Expert guides, tips, and curated free courses for meme coin trading. Stay ahead of the market!">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
-  <link rel="canonical" href="https://yourdomain.com/">
-  <style>
-    :root {
-      --primary: #22223b;
-      --secondary: #4a4e69;
-      --accent: #f2e9e4;
-      --highlight: #9a8c98;
-      --success: #e8f5e9;
-      --warning: #fff3e0;
-      --link: #3a86ff;
-    }
-    body {
-      font-family: 'Georgia', serif;
-      background: var(--accent);
-      color: var(--primary);
-      margin: 0;
-    }
-    header {
-      background: #fff;
-      border-bottom: 2px solid var(--highlight);
-      padding: 32px 0 12px 0;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    }
-    header h1 {
-      font-size: 2.8rem;
-      letter-spacing: 1.5px;
-      margin: 0;
-      font-weight: bold;
-      color: var(--secondary);
-    }
-    nav {
-      margin: 18px 0 0 0;
-      text-align: center;
-    }
-    nav a {
-      color: var(--primary);
-      text-decoration: none;
-      margin: 0 18px;
-      font-weight: 600;
-      font-size: 1.08rem;
-      transition: color 0.2s;
-    }
-    nav a:hover {
-      color: var(--link);
-    }
-    .container {
-      max-width: 950px;
-      margin: 36px auto;
-      background: #fff;
-      padding: 40px 28px;
-      border-radius: 10px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    }
-    h2 {
-      font-size: 2.1rem;
-      margin-top: 38px;
-      margin-bottom: 18px;
-      border-bottom: 2px solid var(--highlight);
-      padding-bottom: 8px;
-      color: var(--secondary);
-    }
-    h3 {
-      font-size: 1.25rem;
-      margin-top: 28px;
-      color: var(--primary);
-    }
-    ul, ol {
-      line-height: 1.7;
-      margin-left: 26px;
-    }
-    .course-links {
-      background: var(--accent);
-      border-left: 5px solid var(--highlight);
-      padding: 18px 22px;
-      margin: 28px 0;
-      border-radius: 7px;
-    }
-    .tip {
-      background: var(--success);
-      border-left: 5px solid #66bb6a;
-      padding: 14px 20px;
-      margin: 20px 0;
-      border-radius: 6px;
-      font-style: italic;
-    }
-    .warning {
-      background: var(--warning);
-      border-left: 5px solid #ffa726;
-      padding: 14px 20px;
-      margin: 20px 0;
-      border-radius: 6px;
-      font-style: italic;
-    }
-    a {
-      color: var(--link);
-      text-decoration: underline;
-      transition: color 0.2s;
-    }
-    a:hover {
-      color: var(--secondary);
-      text-decoration: none;
-    }
-    footer {
-      background: var(--secondary);
-      color: #fff;
-      text-align: center;
-      padding: 30px 0 10px 0;
-      margin-top: 54px;
-      font-size: 1.1rem;
-      letter-spacing: 0.5px;
-    }
-    @media (max-width: 650px) {
-      .container { padding: 18px 5px; }
-      header h1 { font-size: 1.45rem; }
-      nav a { font-size: 1rem; margin: 0 7px; }
-      h2 { font-size: 1.2rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petar Kraljevski - Full Stack Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anybody:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Anybody', sans-serif;
+            overflow: hidden;
+            background: #fafafa;
+            height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            background: #fafafa;
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .nav-left h1 {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .nav-left p {
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.4;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 60px;
+        }
+
+        .nav-right a {
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            font-weight: 400;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-right a:hover {
+            opacity: 0.6;
+        }
+
+        .orange-circle {
+            width: 70px;
+            height: 70px;
+            background: #ff8c00;
+            border-radius: 50%;
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+        }
+
+        /* Container for all sections */
+        .sections-container {
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Sections */
+        section {
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 0 60px;
+            opacity: 0;
+            transform: translateY(100vh);
+            transition: opacity 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), 
+                        transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        section.active {
+            opacity: 1;
+            transform: translateY(0);
+            z-index: 10;
+        }
+
+        section.prev {
+            opacity: 0;
+            transform: translateY(-100vh);
+        }
+
+        /* Home Section - Centered with 2 lines */
+        #home {
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 100px;
+        }
+
+        #home h2 {
+            font-size: 20px;
+            font-weight: 300;
+            margin-bottom: 60px;
+        }
+
+        #home h1 {
+            font-size: 80px;
+            font-weight: 400;
+            line-height: 1.15;
+            max-width: 100%;
+        }
+
+        /* Portfolio Section */
+        #portfolio {
+            padding-top: 180px;
+            padding-left: 50px;
+        }
+
+        #portfolio h1 {
+            font-size: 72px;
+            font-weight: 400;
+            margin-bottom: 100px;
+        }
+
+        .github-link {
+            position: absolute;
+            top: 180px;
+            right: 60px;
+            font-size: 56px;
+            font-weight: 400;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .portfolio-list {
+            list-style: none;
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .orange-box {
+            width: 310px;
+            height: 50px;
+            background: #ff8c00;
+            position: absolute;
+            bottom: 120px;
+            right: 60px;
+        }
+
+        /* Contact Section */
+        #contact {
+            align-items: center;
+            justify-content: center;
+            padding-top: 0;
+        }
+
+        #contact h1 {
+            font-size: 72px;
+            font-weight: 400;
+            margin-bottom: 100px;
+            text-align: center;
+        }
+
+        .contact-box {
+            background: #ff8c00;
+            padding: 60px 140px;
+        }
+
+        .contact-inner {
+            background: #fff;
+            padding: 40px 100px;
+            display: flex;
+            gap: 100px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .linkedin-logo {
+            font-size: 56px;
+            color: #000;
+            font-weight: 600;
+            letter-spacing: -2px;
+        }
+
+        .linkedin-in {
+            background: #0077b5;
+            color: #fff;
+            padding: 6px 14px;
+            font-size: 56px;
+            font-weight: 600;
+            letter-spacing: -2px;
+        }
+
+        .email-icon {
+            font-size: 100px;
+            line-height: 1;
+        }
+
+        /* About Section */
+        #about {
+            justify-content: flex-start;
+            padding-top: 180px;
+            padding-left: 60px;
+        }
+
+        #about h1 {
+            font-size: 72px;
+            font-weight: 400;
+            margin-bottom: 80px;
+        }
+
+        #about p {
+            font-size: 20px;
+            line-height: 1.7;
+            max-width: 1150px;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        #about p:last-child {
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>MemeCoin Times</h1>
+
+    <!-- Navigation -->
     <nav>
-      <a href="#start">Start Here</a>
-      <a href="#courses">Free Courses</a>
-      <a href="#tips">Tips & Tricks</a>
-      <a href="#strategies">Strategies</a>
-      <a href="#scams">Avoiding Scams</a>
-      <a href="#faq">FAQ</a>
+        <div class="nav-left">
+            <h1>Petar Kraljevski</h1>
+            <p>Full Stack Developer<br>based in Macedonia</p>
+        </div>
+        <div class="nav-right">
+            <a onclick="goToSection(1)">Portfolio</a>
+            <a onclick="goToSection(2)">Contact</a>
+            <a onclick="goToSection(3)">About</a>
+        </div>
     </nav>
-  </header>
-  <main class="container">
-    <h2 id="start">How to Start Trading Meme Coins</h2>
-    <ol>
-      <li><strong>Pick a Trading Platform:</strong> Use a CEX (like Binance, KuCoin) for safety, or a DEX (like Uniswap, PancakeSwap) for early access. CEXs are simpler for beginners, DEXs offer more opportunities but require caution.</li>
-      <li><strong>Set Up a Wallet:</strong> Install MetaMask or Trust Wallet for DEX trading. Store your seed phrase offline and never share it.</li>
-      <li><strong>Fund Your Wallet:</strong> Buy ETH (for Ethereum-based coins) or BNB (for BNB Chain coins) on a CEX, then transfer to your wallet.</li>
-      <li><strong>Research Meme Coins:</strong> Use CoinGecko, Twitter, and community forums. Check liquidity, number of holders, and team transparency.</li>
-      <li><strong>Swap for Meme Coins:</strong> On DEXs, connect your wallet, paste the contract address, set slippage (3–10%), and swap. Always double-check the contract address.</li>
-      <li><strong>Track & Sell:</strong> Monitor your coins using MetaMask, DEXTools, or DEXScreener. Sell back to ETH/BNB and withdraw to your CEX to realize profits.</li>
-    </ol>
-    <div class="warning">
-      Never invest more than you can afford to lose. Meme coins are extremely volatile and driven by hype.
+
+    <div class="orange-circle"></div>
+
+    <div class="sections-container">
+        <!-- Home Section -->
+        <section id="home" class="active">
+            <h2>Hey! I am Petar.</h2>
+            <h1>A creative full stack developer<br>focusing on digital experiences.</h1>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio">
+            <h1>Portfolio</h1>
+            <a href="#" class="github-link">GitHub</a>
+            <ul class="portfolio-list">
+                <li>-Wellness IOS AI Application</li>
+                <li>-WLAN Python Chat program</li>
+                <li>-Linkedin Automation Tool</li>
+            </ul>
+            <div class="orange-box"></div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h1>Contact</h1>
+            <div class="contact-box">
+                <div class="contact-inner">
+                    <div>
+                        <span class="linkedin-logo">Linked</span><span class="linkedin-in">in</span>
+                    </div>
+                    <div class="email-icon">✉</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <h1>About me</h1>
+            <p>I'm Petar Kraljevski, a full stack developer based in Macedonia. I build websites and web applications using Python, TypeScript, and HTML/CSS, focusing on practical solutions that work.</p>
+            <p>My background combines technical development with content strategy. I create and maintain blogs, design websites, and develop automation tools that solve real problems. I'm currently pursuing a computer science degree while working on multiple projects that range from WordPress sites to functional applications.</p>
+            <p>I specialize in turning ideas into functional digital products. Whether it's building a content platform from scratch, optimizing SEO performance, or creating tools that automate repetitive tasks, I focus on results over complexity.</p>
+            <p>I'm always open to discussing new opportunities and collaborations.</p>
+        </section>
     </div>
 
-    <h2 id="courses">Top Free & Open Meme Coin Trading Courses</h2>
-    <div class="course-links">
-      <ul>
-        <li>
-          <a href="https://www.udemy.com/course/trading-memes/" target="_blank" rel="noopener">Meme Coin Experts Course (Udemy)</a> — Solana meme coins, project research, scam avoidance, risk management.
-        </li>
-        <li>
-          <a href="https://whop.com/meme-coin-trading-mastery/" target="_blank" rel="noopener">Meme Coins Trading Mastery (Whop)</a> — Free course, trading bot, and Telegram group for catching new trends.
-        </li>
-        <li>
-          <a href="https://www.udemy.com/course/meme-coins-trading-for-begginer-free-meme-coin-ebook/" target="_blank" rel="noopener">Meme Coins Trading for Beginners (Udemy)</a> — 30-minute crash course for beginners, includes a free ebook.
-        </li>
-        <li>
-          <a href="https://www.udemy.com/course/meme-coin-trading-course/" target="_blank" rel="noopener">The Ultimate Meme Coin Trading Course (Udemy)</a> — Strategies, portfolio setup, risk management, and market insights.
-        </li>
-        <li>
-          <a href="https://techpoint.africa/guide/a-complete-guide-to-trading-meme-coins/" target="_blank" rel="noopener">Complete Guide to Trading Meme Coins (Techpoint Africa)</a> — Step-by-step beginner’s guide.
-        </li>
-        <li>
-          <a href="https://www.youtube.com/watch?v=cvOFCHIuyNo" target="_blank" rel="noopener">Full Crypto & Memecoin Trading Course (YouTube)</a> — Free video course covering all basics.
-        </li>
-      </ul>
-    </div>
+    <script>
+        let currentSection = 0;
+        const sections = document.querySelectorAll('section');
+        let isScrolling = false;
+        let touchStartY = 0;
+        let touchEndY = 0;
 
-    <h2 id="tips">Essential Meme Coin Trading Tips & Tricks</h2>
-    <ul>
-      <li>Start with small amounts — limit meme coin exposure to 1–2% of your portfolio.</li>
-      <li>Diversify across several promising coins, not just one.</li>
-      <li>Research deeply: Use DEXTools, CoinGecko, and Twitter to study liquidity, holders, and team transparency.</li>
-      <li>Monitor social media and news for hype cycles — meme coins move fast!</li>
-      <li>Set clear exit strategies: Know your profit targets and stop-losses before you buy.</li>
-      <li>Use technical analysis: Watch for volume spikes, chart patterns, and market sentiment.</li>
-      <li>Explore staking or farming for passive income, but only on reputable projects.</li>
-    </ul>
-    <div class="tip">
-      <strong>Pro Tip:</strong> Use <a href="https://tokensniffer.com/" target="_blank" rel="noopener">TokenSniffer</a> and <a href="https://rugdoc.io/" target="_blank" rel="noopener">RugDoc.io</a> to check for scam tokens before buying.
-    </div>
+        function goToSection(index) {
+            if (isScrolling || index === currentSection) return;
+            
+            isScrolling = true;
+            
+            // Remove all classes
+            sections.forEach(section => {
+                section.classList.remove('active', 'prev');
+            });
+            
+            // Mark previous section
+            if (index > currentSection) {
+                sections[currentSection].classList.add('prev');
+            }
+            
+            // Activate new section
+            sections[index].classList.add('active');
+            currentSection = index;
+            
+            setTimeout(() => {
+                isScrolling = false;
+            }, 800);
+        }
 
-    <h2 id="strategies">Popular Meme Coin Trading Strategies</h2>
-    <ul>
-      <li><strong>Day Trading:</strong> Profit from intraday price swings. Requires discipline and fast action.</li>
-      <li><strong>Swing Trading:</strong> Buy the dips, sell the hype. Hold positions for days or weeks.</li>
-      <li><strong>Scalping:</strong> Make multiple quick trades for small profits, ideal in high volatility.</li>
-      <li><strong>HODLing:</strong> Hold coins with strong communities for the long term (e.g., Dogecoin).</li>
-      <li><strong>Futures Trading:</strong> High-risk, advanced strategy using leverage — only for experienced traders.</li>
-    </ul>
-    <div class="tip">
-      <strong>Expert Advice:</strong> Most meme coin profits come from catching the trend early and exiting before the hype fades. Don’t get greedy—secure profits along the way!
-    </div>
+        function handleScroll(event) {
+            event.preventDefault();
+            
+            if (isScrolling) return;
+            
+            if (event.deltaY > 0) {
+                // Scroll down
+                if (currentSection < sections.length - 1) {
+                    goToSection(currentSection + 1);
+                }
+            } else {
+                // Scroll up
+                if (currentSection > 0) {
+                    goToSection(currentSection - 1);
+                }
+            }
+        }
 
-    <h2 id="scams">How to Avoid Meme Coin Scams</h2>
-    <ul>
-      <li>Double-check contract addresses — only use official sources like CoinGecko.</li>
-      <li>Beware of airdrop scams: Never interact with suspicious tokens sent to your wallet.</li>
-      <li>Watch for rug pulls: Sudden price spikes with no selling activity are a red flag.</li>
-      <li>Honeypots: Some tokens let you buy but not sell. Test with a small amount first.</li>
-      <li>Check for locked liquidity and transparent teams.</li>
-      <li>Analyze social media: Look for active, transparent developers.</li>
-      <li>Never click random Telegram/Twitter links or give out your seed phrase.</li>
-    </ul>
-    <div class="warning">
-      If it sounds too good to be true, it probably is. Always DYOR (Do Your Own Research)!
-    </div>
+        // Touch events for mobile
+        function handleTouchStart(event) {
+            touchStartY = event.touches[0].clientY;
+        }
 
-    <h2 id="faq">FAQ</h2>
-    <h3>What are meme coins?</h3>
-    <p>Meme coins are cryptocurrencies inspired by internet memes or pop culture — often highly volatile and community-driven, like Dogecoin and Shiba Inu.</p>
+        function handleTouchMove(event) {
+            touchEndY = event.touches[0].clientY;
+        }
 
-    <h3>Are meme coins a good investment?</h3>
-    <p>Meme coins are speculative and risky. Some traders make big profits, but many lose money. Only invest what you can afford to lose.</p>
+        function handleTouchEnd() {
+            if (isScrolling) return;
+            
+            const swipeDistance = touchStartY - touchEndY;
+            
+            if (Math.abs(swipeDistance) > 50) {
+                if (swipeDistance > 0) {
+                    // Swipe up - go to next section
+                    if (currentSection < sections.length - 1) {
+                        goToSection(currentSection + 1);
+                    }
+                } else {
+                    // Swipe down - go to previous section
+                    if (currentSection > 0) {
+                        goToSection(currentSection - 1);
+                    }
+                }
+            }
+        }
 
-    <h3>How can I find new meme coins early?</h3>
-    <p>Monitor DEX listings, Twitter, and CoinGecko for trending tokens. Join Telegram communities for early news, but beware of scams.</p>
+        // Keyboard navigation
+        function handleKeyboard(event) {
+            if (event.key === 'ArrowDown') {
+                if (currentSection < sections.length - 1) {
+                    goToSection(currentSection + 1);
+                }
+            } else if (event.key === 'ArrowUp') {
+                if (currentSection > 0) {
+                    goToSection(currentSection - 1);
+                }
+            }
+        }
 
-    <h3>What tools should I use?</h3>
-    <p>DEXTools, DEXScreener, TokenSniffer, and RugDoc.io are essential for research and scam detection.</p>
+        window.addEventListener('wheel', handleScroll, { passive: false });
+        window.addEventListener('touchstart', handleTouchStart, { passive: true });
+        window.addEventListener('touchmove', handleTouchMove, { passive: true });
+        window.addEventListener('touchend', handleTouchEnd, { passive: true });
+        window.addEventListener('keydown', handleKeyboard);
 
-    <h3>Can I earn passive income?</h3>
-    <p>Yes, through staking or yield farming on some meme coin projects. Always research the project first!</p>
+        // Initialize
+        sections[0].classList.add('active');
+    </script>
 
-    <div class="tip">
-      <strong>Bookmark this site!</strong> New tutorials, live market updates, and exclusive trading tips are added regularly.
-    </div>
-  </main>
-  <footer>
-    <p>&copy; 2025 MemeCoin Times. Not financial advice. Always DYOR.</p>
-  </footer>
 </body>
 </html>
